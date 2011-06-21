@@ -1,24 +1,70 @@
 --- 
 - !ruby/object:Rubber::Configuration::InstanceItem 
   domain: rupyrumble.pl
-  external_host: ec2-50-19-9-232.compute-1.amazonaws.com
-  external_ip: 50.19.9.232
+  external_host: ec2-50-17-117-93.compute-1.amazonaws.com
+  external_ip: 50.17.117.93
   image_id: ami-fa01f193
   image_type: m1.large
-  instance_id: i-d34417bd
-  internal_host: ip-10-72-70-229.ec2.internal
-  internal_ip: 10.72.70.229
-  name: production
+  instance_id: i-3f9ecd51
+  internal_host: domU-12-31-39-15-65-62.compute-1.internal
+  internal_ip: 10.207.102.144
+  name: db01
   platform: linux
   roles: 
   - !ruby/object:Rubber::Configuration::RoleItem 
-    name: web
+    name: mysql_master
     options: {}
 
   - !ruby/object:Rubber::Configuration::RoleItem 
-    name: haproxy
+    name: db
+    options: 
+      primary: true
+  root_device_type: instance-store
+  security_groups: 
+  - rubbit_production_default
+  - rubbit_production_db01
+  - rubbit_production_mysql_master
+  - rubbit_production_db
+  zone: us-east-1b
+- !ruby/object:Rubber::Configuration::InstanceItem 
+  domain: rupyrumble.pl
+  external_host: ec2-50-17-65-109.compute-1.amazonaws.com
+  external_ip: 50.17.65.109
+  image_id: ami-fa01f193
+  image_type: m1.large
+  instance_id: i-c99dcea7
+  internal_host: ip-10-64-71-246.ec2.internal
+  internal_ip: 10.64.71.246
+  name: db02
+  platform: linux
+  roles: 
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: mysql_slave
     options: {}
 
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: db
+    options: {}
+
+  root_device_type: instance-store
+  security_groups: 
+  - rubbit_production_default
+  - rubbit_production_db02
+  - rubbit_production_mysql_slave
+  - rubbit_production_db
+  zone: us-east-1b
+- !ruby/object:Rubber::Configuration::InstanceItem 
+  domain: rupyrumble.pl
+  external_host: ec2-67-202-8-162.compute-1.amazonaws.com
+  external_ip: 67.202.8.162
+  image_id: ami-fa01f193
+  image_type: m1.large
+  instance_id: i-7797c419
+  internal_host: ip-10-194-169-236.ec2.internal
+  internal_ip: 10.194.169.236
+  name: app01
+  platform: linux
+  roles: 
   - !ruby/object:Rubber::Configuration::RoleItem 
     name: app
     options: {}
@@ -31,25 +77,82 @@
     name: apache
     options: {}
 
+  root_device_type: instance-store
+  security_groups: 
+  - rubbit_production_default
+  - rubbit_production_app01
+  - rubbit_production_app
+  - rubbit_production_passenger
+  - rubbit_production_apache
+  zone: us-east-1c
+- !ruby/object:Rubber::Configuration::InstanceItem 
+  domain: rupyrumble.pl
+  external_host: ec2-50-17-179-125.compute-1.amazonaws.com
+  external_ip: 50.17.179.125
+  image_id: ami-fa01f193
+  image_type: m1.large
+  instance_id: i-5f96c531
+  internal_host: ip-10-116-243-238.ec2.internal
+  internal_ip: 10.116.243.238
+  name: app02
+  platform: linux
+  roles: 
   - !ruby/object:Rubber::Configuration::RoleItem 
-    name: db
-    options: 
-      primary: true
+    name: app
+    options: {}
+
   - !ruby/object:Rubber::Configuration::RoleItem 
-    name: mysql_master
+    name: passenger
+    options: {}
+
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: apache
+    options: {}
+
+  root_device_type: instance-store
+  security_groups: 
+  - rubbit_production_default
+  - rubbit_production_app02
+  - rubbit_production_app
+  - rubbit_production_passenger
+  - rubbit_production_apache
+  zone: us-east-1c
+- !ruby/object:Rubber::Configuration::InstanceItem 
+  domain: rupyrumble.pl
+  external_host: ec2-75-101-181-252.compute-1.amazonaws.com
+  external_ip: 75.101.181.252
+  image_id: ami-fa01f193
+  image_type: m1.large
+  instance_id: i-7792c119
+  internal_host: domU-12-31-39-09-BA-61.compute-1.internal
+  internal_ip: 10.210.189.139
+  name: web01
+  platform: linux
+  roles: 
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: web
+    options: {}
+
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: haproxy
+    options: {}
+
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: passenger
+    options: {}
+
+  - !ruby/object:Rubber::Configuration::RoleItem 
+    name: apache
     options: {}
 
   root_device_type: instance-store
   security_groups: 
   - rubbit_production_default
   - rubbit_production_web
-  - rubbit_production_production
+  - rubbit_production_web01
   - rubbit_production_haproxy
-  - rubbit_production_app
   - rubbit_production_passenger
   - rubbit_production_apache
-  - rubbit_production_db
-  - rubbit_production_mysql_master
   zone: us-east-1b
 - volumes: {}
 
